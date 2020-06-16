@@ -18,7 +18,7 @@ public class Main extends Application {
     Button add, subtract, divide, multiply, equals, clear, negate;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         answer = new Label("0");
         add = new Button("+");
         subtract = new Button("-");
@@ -41,7 +41,7 @@ public class Main extends Application {
         GridPane gridPane = new GridPane();
 
         addElementsToGrid(gridPane);
-        resizeButtons(gridPane);
+        resizeButtons();
         setAction();
 
         Scene scene = new Scene(gridPane, 220, 300);
@@ -60,6 +60,7 @@ public class Main extends Application {
         multiply.setOnAction(this::buttonAction);
         divide.setOnAction(this::buttonAction);
         equals.setOnAction(this::buttonAction);
+        clear.setOnAction(this::buttonAction);
     }
 
     private void buttonAction(ActionEvent event) {
@@ -103,6 +104,12 @@ public class Main extends Application {
             answer.setText("0");
             operation = 'd';
         }
+        else if(event.getSource() == clear) {
+            number = 0;
+            operation = 'x';
+            isResult = false;
+            answer.setText("0");
+        }
         else {
             for (Button b : numbers) {
                 if (event.getSource() == b && answer.getText().length() <= 16) {
@@ -142,7 +149,7 @@ public class Main extends Application {
         gridPane.add(equals, 2, 6, 2, 1);
     }
 
-    private void resizeButtons(GridPane gridPane) {
+    private void resizeButtons() {
         answer.setPrefWidth(300);
         answer.setPrefHeight(100);
 
