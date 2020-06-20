@@ -5,13 +5,17 @@ import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 
 public class Main extends Application {
 
     Label answer;
-    int number = 0;
+    long number = 0;
     char operation = 'x';
     boolean isResult = false;
     Button[] numbers = new Button[10];
@@ -38,20 +42,82 @@ public class Main extends Application {
         numbers[8] = new Button("8");
         numbers[9] = new Button("9");
 
-        GridPane gridPane = new GridPane();
-
-        addElementsToGrid(gridPane);
-        resizeButtons();
-        setAction();
+        GridPane gridPane = new GridPane() {
+            @Override
+            public void requestFocus() {
+                // So that ENTER doesn't click on the focused button
+            }
+        };
 
         Scene scene = new Scene(gridPane, 220, 300);
+        scene.getRoot().requestFocus();
+
+        addElementsToGrid(gridPane);
+        setKeyboardAction(scene);
+        setButtonAction();
+        resizeButtons();
+        setUI();
+
         primaryStage.setTitle("Calculator");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private void setAction() {
+    private void setKeyboardAction(Scene scene) {
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+            if(key.getCode() == KeyCode.DIGIT0 || key.getCode() == KeyCode.NUMPAD0) {
+                numbers[0].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT1 || key.getCode() == KeyCode.NUMPAD1) {
+                numbers[1].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT2 || key.getCode() == KeyCode.NUMPAD2) {
+                numbers[2].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT3 || key.getCode() == KeyCode.NUMPAD3) {
+                numbers[3].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT4 || key.getCode() == KeyCode.NUMPAD4) {
+                numbers[4].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT5 || key.getCode() == KeyCode.NUMPAD5) {
+                numbers[5].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT6 || key.getCode() == KeyCode.NUMPAD6) {
+                numbers[6].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT7 || key.getCode() == KeyCode.NUMPAD7) {
+                numbers[7].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT8 || key.getCode() == KeyCode.NUMPAD8) {
+                numbers[8].fire();
+            }
+            else if(key.getCode() == KeyCode.DIGIT9 || key.getCode() == KeyCode.NUMPAD9) {
+                numbers[9].fire();
+            }
+            else if(key.getCode() == KeyCode.PLUS || key.getCode() == KeyCode.ADD) {
+                add.fire();
+            }
+            else if(key.getCode() == KeyCode.SLASH || key.getCode() == KeyCode.DIVIDE) {
+                divide.fire();
+            }
+            else if(key.getCode() == KeyCode.STAR || key.getCode() == KeyCode.MULTIPLY) {
+                multiply.fire();
+            }
+            else if(key.getCode() == KeyCode.MINUS || key.getCode() == KeyCode.SUBTRACT) {
+                subtract.fire();
+            }
+            else if(key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.EQUALS) {
+                equals.fire();
+            }
+            else {
+                System.out.println(key.getCode());
+            }
+        });
+    }
+
+    private void setButtonAction() {
         for (Button b : numbers) {
             b.setOnAction(this::buttonAction);
         }
@@ -67,19 +133,19 @@ public class Main extends Application {
         if (event.getSource() == equals) {
             switch(operation) {
                 case 'a':
-                    answer.setText(Integer.toString(number + Integer.parseInt(answer.getText())));
+                    answer.setText(Long.toString(number + Long.parseLong(answer.getText())));
                     isResult = true;
                     break;
                 case 's':
-                    answer.setText(Integer.toString(number - Integer.parseInt(answer.getText())));
+                    answer.setText(Long.toString(number - Long.parseLong(answer.getText())));
                     isResult = true;
                     break;
                 case 'm':
-                    answer.setText(Integer.toString(number * Integer.parseInt(answer.getText())));
+                    answer.setText(Long.toString(number * Long.parseLong(answer.getText())));
                     isResult = true;
                     break;
                 case 'd':
-                    answer.setText(Integer.toString(number / Integer.parseInt(answer.getText())));
+                    answer.setText(Long.toString(number / Long.parseLong(answer.getText())));
                     isResult = true;
                     break;
             }
@@ -112,10 +178,11 @@ public class Main extends Application {
         }
         else {
             for (Button b : numbers) {
-                if (event.getSource() == b && answer.getText().length() <= 16) {
+                if (event.getSource() == b && answer.getText().length() <= 12) {
                     if (answer.getText().equals("0") || isResult) {
                         answer.setText(b.getText());
                     } else {
+
                         answer.setText(answer.getText() + b.getText());
                     }
                     return;
@@ -175,6 +242,10 @@ public class Main extends Application {
         setButtonSize(multiply);
         setButtonSize(divide);
         setButtonSize(negate);
+    }
+
+    private void setUI() {
+        answer.setFont(new Font("Segoe", 32));
     }
 
     private void setButtonSize(Button b) {
