@@ -11,13 +11,11 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-
 public class Main extends Application {
 
     Label answer;
     long number = 0;
     char operation = 'x';
-    boolean isResult = false;
     Button[] numbers = new Button[10];
     Button add, subtract, divide, multiply, equals, clear, negate;
 
@@ -42,15 +40,9 @@ public class Main extends Application {
         numbers[8] = new Button("8");
         numbers[9] = new Button("9");
 
-        GridPane gridPane = new GridPane() {
-            @Override
-            public void requestFocus() {
-                // So that ENTER doesn't click on the focused button
-            }
-        };
+        GridPane gridPane = new GridPane();
 
         Scene scene = new Scene(gridPane, 220, 300);
-        scene.getRoot().requestFocus();
 
         addElementsToGrid(gridPane);
         setKeyboardAction(scene);
@@ -62,6 +54,8 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        gridPane.requestFocus();
     }
 
     private void setKeyboardAction(Scene scene) {
@@ -127,6 +121,7 @@ public class Main extends Application {
         divide.setOnAction(this::buttonAction);
         equals.setOnAction(this::buttonAction);
         clear.setOnAction(this::buttonAction);
+        negate.setOnAction(this::buttonAction);
     }
 
     private void buttonAction(ActionEvent event) {
@@ -134,19 +129,15 @@ public class Main extends Application {
             switch(operation) {
                 case 'a':
                     answer.setText(Long.toString(number + Long.parseLong(answer.getText())));
-                    isResult = true;
                     break;
                 case 's':
                     answer.setText(Long.toString(number - Long.parseLong(answer.getText())));
-                    isResult = true;
                     break;
                 case 'm':
                     answer.setText(Long.toString(number * Long.parseLong(answer.getText())));
-                    isResult = true;
                     break;
                 case 'd':
                     answer.setText(Long.toString(number / Long.parseLong(answer.getText())));
-                    isResult = true;
                     break;
             }
         }
@@ -173,16 +164,20 @@ public class Main extends Application {
         else if(event.getSource() == clear) {
             number = 0;
             operation = 'x';
-            isResult = false;
             answer.setText("0");
+        }
+        else if(event.getSource() == negate) {
+            answer.setText(Long.toString(Long.parseLong(answer.getText()) * -1));
         }
         else {
             for (Button b : numbers) {
                 if (event.getSource() == b && answer.getText().length() <= 12) {
-                    if (answer.getText().equals("0") || isResult) {
+                    System.out.println(b.getText());
+                    if (answer.getText().equals("0")) {
                         answer.setText(b.getText());
-                    } else {
-
+                        break;
+                    }
+                    else {
                         answer.setText(answer.getText() + b.getText());
                     }
                     return;
@@ -214,6 +209,19 @@ public class Main extends Application {
         gridPane.add(negate, 0, 6, 1, 1);
         gridPane.add(numbers[0], 1, 6, 1, 1);
         gridPane.add(equals, 2, 6, 2, 1);
+
+        answer.setFocusTraversable(false);
+        clear.setFocusTraversable(false);
+        divide.setFocusTraversable(false);
+        multiply.setFocusTraversable(false);
+        subtract.setFocusTraversable(false);
+        add.setFocusTraversable(false);
+        negate.setFocusTraversable(false);
+        equals.setFocusTraversable(false);
+
+        for(Button b : numbers) {
+            b.setFocusTraversable(false);
+        }
     }
 
     private void resizeButtons() {
