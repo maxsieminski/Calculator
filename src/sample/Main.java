@@ -14,10 +14,10 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     Label answer;
-    long number = 0;
+    double number = 0;
     char operation = 'x';
     Button[] numbers = new Button[10];
-    Button add, subtract, divide, multiply, equals, clear, negate;
+    Button add, subtract, divide, multiply, equals, clear, negate, comma;
 
     @Override
     public void start(Stage primaryStage) {
@@ -29,6 +29,7 @@ public class Main extends Application {
         equals = new Button("=");
         clear = new Button("CLEAR");
         negate = new Button("N");
+        comma = new Button(".");
         numbers[0] = new Button("0");
         numbers[1] = new Button("1");
         numbers[2] = new Button("2");
@@ -105,6 +106,9 @@ public class Main extends Application {
             else if(key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.EQUALS) {
                 equals.fire();
             }
+            else if(key.getCode() == KeyCode.COMMA || key.getCode() == KeyCode.DECIMAL) {
+                comma.fire();
+            }
             else {
                 System.out.println(key.getCode());
             }
@@ -122,42 +126,43 @@ public class Main extends Application {
         equals.setOnAction(this::buttonAction);
         clear.setOnAction(this::buttonAction);
         negate.setOnAction(this::buttonAction);
+        comma.setOnAction(this::buttonAction);
     }
 
     private void buttonAction(ActionEvent event) {
         if (event.getSource() == equals) {
             switch(operation) {
                 case 'a':
-                    answer.setText(Long.toString(number + Long.parseLong(answer.getText())));
+                    answer.setText(Double.toString(number + Double.parseDouble(answer.getText())));
                     break;
                 case 's':
-                    answer.setText(Long.toString(number - Long.parseLong(answer.getText())));
+                    answer.setText(Double.toString(number - Double.parseDouble(answer.getText())));
                     break;
                 case 'm':
-                    answer.setText(Long.toString(number * Long.parseLong(answer.getText())));
+                    answer.setText(Double.toString(number * Double.parseDouble(answer.getText())));
                     break;
                 case 'd':
-                    answer.setText(Long.toString(number / Long.parseLong(answer.getText())));
+                    answer.setText(Double.toString(number / Double.parseDouble(answer.getText())));
                     break;
             }
         }
         else if(event.getSource() == add) {
-            number = Integer.parseInt(answer.getText());
+            number = Double.parseDouble(answer.getText());
             answer.setText("0");
             operation = 'a';
         }
         else if(event.getSource() == subtract) {
-            number = Integer.parseInt(answer.getText());
+            number = Double.parseDouble(answer.getText());
             answer.setText("0");
             operation = 's';
         }
         else if(event.getSource() == multiply) {
-            number = Integer.parseInt(answer.getText());
+            number = Double.parseDouble(answer.getText());
             answer.setText("0");
             operation = 'm';
         }
         else if(event.getSource() == divide) {
-            number = Integer.parseInt(answer.getText());
+            number = Double.parseDouble(answer.getText());
             answer.setText("0");
             operation = 'd';
         }
@@ -168,6 +173,9 @@ public class Main extends Application {
         }
         else if(event.getSource() == negate) {
             answer.setText(Long.toString(Long.parseLong(answer.getText()) * -1));
+        }
+        else if(event.getSource() == comma) {
+            answer.setText(answer.getText() + ".");
         }
         else {
             for (Button b : numbers) {
@@ -208,7 +216,8 @@ public class Main extends Application {
 
         gridPane.add(negate, 0, 6, 1, 1);
         gridPane.add(numbers[0], 1, 6, 1, 1);
-        gridPane.add(equals, 2, 6, 2, 1);
+        gridPane.add(comma, 2, 6, 1, 1);
+        gridPane.add(equals, 3, 6, 1, 1);
 
         answer.setFocusTraversable(false);
         clear.setFocusTraversable(false);
@@ -218,6 +227,7 @@ public class Main extends Application {
         add.setFocusTraversable(false);
         negate.setFocusTraversable(false);
         equals.setFocusTraversable(false);
+        comma.setFocusTraversable(false);
 
         for(Button b : numbers) {
             b.setFocusTraversable(false);
@@ -230,9 +240,6 @@ public class Main extends Application {
 
         clear.setPrefWidth(165);
         clear.setPrefHeight(40);
-
-        equals.setPrefWidth(110);
-        equals.setPrefHeight(40);
 
         setButtonSize(numbers[0]);
         setButtonSize(numbers[1]);
@@ -250,6 +257,8 @@ public class Main extends Application {
         setButtonSize(multiply);
         setButtonSize(divide);
         setButtonSize(negate);
+        setButtonSize(equals);
+        setButtonSize(comma);
     }
 
     private void setUI() {
