@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,11 +17,11 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     Label answer;
-    long tempNumber, number = 0;
+    float tempNumber, number = 0;
     char operation = 'x';
     boolean equalsPressed = false;
     Button[] numbers = new Button[10];
-    Button add, subtract, divide, multiply, equals, clear, negate;
+    Button add, subtract, divide, multiply, equals, clear, negate, comma;
 
     @Override
     public void start(Stage primaryStage) {
@@ -32,6 +33,7 @@ public class Main extends Application {
         equals = new Button("=");
         clear = new Button("CLEAR");
         negate = new Button("N");
+        comma = new Button(",");
         numbers[0] = new Button("0");
         numbers[1] = new Button("1");
         numbers[2] = new Button("2");
@@ -67,6 +69,7 @@ public class Main extends Application {
         final KeyCodeCombination shiftMultiply = new KeyCodeCombination(KeyCode.DIGIT8, KeyCombination.SHIFT_DOWN);
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+            // TODO: convert to switch
             if(key.getCode() == KeyCode.PLUS || key.getCode() == KeyCode.ADD || shiftAdd.match(key)) {
                 add.fire();
             }
@@ -81,6 +84,9 @@ public class Main extends Application {
             }
             else if(key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.EQUALS) {
                 equals.fire();
+            }
+            else if(key.getCode() == KeyCode.PERIOD || key.getCode() == KeyCode.DECIMAL) {
+                comma.fire();
             }
             else if(key.getCode() == KeyCode.DIGIT0 || key.getCode() == KeyCode.NUMPAD0) {
                 numbers[0].fire();
@@ -135,69 +141,70 @@ public class Main extends Application {
         equals.setOnAction(this::buttonAction);
         clear.setOnAction(this::buttonAction);
         negate.setOnAction(this::buttonAction);
+        comma.setOnAction(this::buttonAction);
     }
 
     private void buttonAction(ActionEvent event) {
         if (event.getSource() == equals) {
             if (!equalsPressed) {
-                tempNumber = Long.parseLong(answer.getText());
+                tempNumber = Float.parseFloat(answer.getText());
             }
             switch(operation) {
                 case 'a':
                     if (equalsPressed) {
-                        answer.setText(Long.toString(Long.parseLong(answer.getText()) + tempNumber));
+                        answer.setText(Float.toString(Float.parseFloat(answer.getText()) + tempNumber));
                     }
                     else {
-                        answer.setText(Long.toString(number + Long.parseLong(answer.getText())));
+                        answer.setText(Float.toString(number + Float.parseFloat(answer.getText())));
                     }
                     break;
                 case 's':
                     if (equalsPressed) {
-                        answer.setText(Long.toString(Long.parseLong(answer.getText()) - tempNumber));
+                        answer.setText(Float.toString(Float.parseFloat(answer.getText()) - tempNumber));
                     }
                     else {
-                        answer.setText(Long.toString(number - Long.parseLong(answer.getText())));
+                        answer.setText(Float.toString(number - Float.parseFloat(answer.getText())));
                     }
                     break;
                 case 'm':
                     if (equalsPressed) {
-                        answer.setText(Long.toString(Long.parseLong(answer.getText()) * tempNumber));
+                        answer.setText(Float.toString(Float.parseFloat(answer.getText()) * tempNumber));
                     }
                     else {
-                        answer.setText(Long.toString(number * Long.parseLong(answer.getText())));
+                        answer.setText(Float.toString(number * Float.parseFloat(answer.getText())));
                     }
                     break;
                 case 'd':
                     if (equalsPressed) {
-                        answer.setText(Long.toString(Long.parseLong(answer.getText()) / tempNumber));
+                        answer.setText(Float.toString(Float.parseFloat(answer.getText()) / tempNumber));
                     }
                     else {
-                        answer.setText(Long.toString(number / Long.parseLong(answer.getText())));
+                        answer.setText(Float.toString(number / Long.parseLong(answer.getText())));
                     }
                     break;
             }
             equalsPressed = true;
         }
         else if(event.getSource() == add) {
-            number = Integer.parseInt(answer.getText());
+            number = Float.parseFloat(answer.getText());
             equalsPressed = false;
             answer.setText("0");
             operation = 'a';
         }
         else if(event.getSource() == subtract) {
-            number = Integer.parseInt(answer.getText());
+            number = Float.parseFloat(answer.getText());
             equalsPressed = false;
             answer.setText("0");
             operation = 's';
         }
         else if(event.getSource() == multiply) {
-            number = Integer.parseInt(answer.getText());
+            number = Float.parseFloat(answer.getText());
             equalsPressed = false;
             answer.setText("0");
             operation = 'm';
         }
         else if(event.getSource() == divide) {
-            number = Integer.parseInt(answer.getText());
+            number = Float.parseFloat(answer.getText());
             equalsPressed = false;
             answer.setText("0");
             operation = 'd';
@@ -209,7 +216,13 @@ public class Main extends Application {
             equalsPressed = false;
         }
         else if(event.getSource() == negate) {
-            answer.setText(Long.toString(Long.parseLong(answer.getText()) * -1));
+            answer.setText(Float.toString(Float.parseFloat(answer.getText()) * -1));
+        }
+        else if(event.getSource() == comma) {
+            if (!answer.getText().contains(".")) {
+                answer.setText(Float.toString(Float.parseFloat(answer.getText() + ".")));
+                answer.setText(answer.getText().substring(0, answer.getText().length() - 1));
+            }
         }
         else {
             for (Button b : numbers) {
@@ -249,7 +262,8 @@ public class Main extends Application {
 
         gridPane.add(negate, 0, 6, 1, 1);
         gridPane.add(numbers[0], 1, 6, 1, 1);
-        gridPane.add(equals, 2, 6, 2, 1);
+        gridPane.add(comma, 2, 6, 1, 1);
+        gridPane.add(equals, 3, 6, 1, 1);
 
         answer.setFocusTraversable(false);
         clear.setFocusTraversable(false);
@@ -272,9 +286,6 @@ public class Main extends Application {
         clear.setPrefWidth(165);
         clear.setPrefHeight(40);
 
-        equals.setPrefWidth(110);
-        equals.setPrefHeight(40);
-
         setButtonSize(numbers[0]);
         setButtonSize(numbers[1]);
         setButtonSize(numbers[2]);
@@ -291,14 +302,17 @@ public class Main extends Application {
         setButtonSize(multiply);
         setButtonSize(divide);
         setButtonSize(negate);
+        setButtonSize(comma);
+        setButtonSize(equals);
     }
 
     private void setUI() {
         answer.setFont(new Font("Segoe", 32));
+        answer.setAlignment(Pos.CENTER_RIGHT);
     }
 
     private void setButtonSize(Button b) {
-        b.setPrefWidth(55);
+        b.setPrefWidth(56);
         b.setPrefHeight(40);
     }
 
