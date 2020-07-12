@@ -16,8 +16,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 // TODO: convert if else to switch
-// TODO: fix decimal division
-// TODO: UI
+// TODO: Fix buttons dispersing on resize
 
 public class Main extends Application {
 
@@ -328,11 +327,13 @@ public class Main extends Application {
         setButtonSize(scene, equals);
     }
 
+    private void setButtonSize(Scene scene, Button b) {
+        b.setPrefWidth(scene.getWidth() * 0.25454545);
+        b.setPrefHeight(scene.getHeight() * 0.1333333);
+    }
+
     private void setUI(Scene scene) { //TODO
         scene.getRoot().setStyle("-fx-background-color: #232323");
-
-        answer.setStyle("-fx-background-color: #242424; -fx-font-family: Segoe; -fx-font-size: 48; -fx-text-fill: white;");
-        answer.setAlignment(Pos.CENTER_RIGHT);
 
         for (int i = 0; i < 10; i++) {
             if (!uiInitialized) {
@@ -341,7 +342,7 @@ public class Main extends Application {
                 numbers[i].setOnMouseEntered(e->numbers[tempI].setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;"));
                 numbers[i].setOnMouseExited(e->numbers[tempI].setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;"));
             }
-            if (scene.getHeight() > 500 && scene.getWidth() > 400 && !resizedFlag) {
+            if ((scene.getHeight() > 500 || scene.getWidth() > 400) && !resizedFlag) {
                 for (int j = 0; j < 10; j++) {
                     int tempJ = j;
                     numbers[j].setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;");
@@ -349,7 +350,7 @@ public class Main extends Application {
                     numbers[j].setOnMouseExited(e->numbers[tempJ].setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
                 }
             }
-            else if (scene.getWidth() < 400 && scene.getHeight() < 500 && resizedFlag) {
+            else if ((scene.getWidth() < 400 || scene.getHeight() < 500) && resizedFlag) {
                 for (int j = 0; j < 10; j++) {
                     int tempJ = j;
                     numbers[j].setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;");
@@ -360,10 +361,13 @@ public class Main extends Application {
         }
 
         if(!uiInitialized) {
-            negate.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0;");
+            answer.setStyle("-fx-background-color: #242424; -fx-font-family: Segoe; -fx-font-size: 48; -fx-text-fill: white; -fx-font-size: 24;");
+            answer.setAlignment(Pos.CENTER_RIGHT);
+
+            negate.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;");
             comma.setStyle(negate.getStyle());
 
-            clear.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0;");
+            clear.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;");
             divide.setStyle(clear.getStyle());
             multiply.setStyle(clear.getStyle());
             add.setStyle(clear.getStyle());
@@ -398,45 +402,53 @@ public class Main extends Application {
             uiInitialized = true;
         }
 
-        if (scene.getHeight() > 500 && scene.getWidth() > 400 && !resizedFlag) {
-            negate.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;");
+        if ((scene.getHeight() > 500 || scene.getWidth() > 400) && !resizedFlag) {
+            answer.setStyle("-fx-background-color: #242424; -fx-font-family: Segoe; -fx-font-size: 48; -fx-text-fill: white; -fx-font-size: 32;");
+            answer.setAlignment(Pos.CENTER_RIGHT);
+
+            negate.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;");
             comma.setStyle(negate.getStyle());
 
-            clear.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;");
+            clear.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;");
             divide.setStyle(clear.getStyle());
             multiply.setStyle(clear.getStyle());
             add.setStyle(clear.getStyle());
             subtract.setStyle(clear.getStyle());
 
-            equals.setStyle("-fx-background-color: #16466d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;");
+            equals.setStyle("-fx-background-color: #16466d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;");
 
-            negate.setOnMouseEntered(e->negate.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            negate.setOnMouseExited(e->negate.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            negate.setOnMouseEntered(e->negate.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            negate.setOnMouseExited(e->negate.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            comma.setOnMouseEntered(e->comma.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            comma.setOnMouseExited(e->comma.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            comma.setOnMouseEntered(e->comma.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            comma.setOnMouseExited(e->comma.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            clear.setOnMouseEntered(e->clear.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            clear.setOnMouseExited(e->clear.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            clear.setOnMouseEntered(e->clear.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            clear.setOnMouseExited(e->clear.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            divide.setOnMouseEntered(e->divide.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            divide.setOnMouseExited(e->divide.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            divide.setOnMouseEntered(e->divide.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            divide.setOnMouseExited(e->divide.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            multiply.setOnMouseEntered(e->multiply.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            multiply.setOnMouseExited(e->multiply.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            multiply.setOnMouseEntered(e->multiply.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            multiply.setOnMouseExited(e->multiply.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            add.setOnMouseEntered(e->add.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            add.setOnMouseExited(e->add.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            add.setOnMouseEntered(e->add.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            add.setOnMouseExited(e->add.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            subtract.setOnMouseEntered(e->subtract.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            subtract.setOnMouseExited(e->subtract.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            subtract.setOnMouseEntered(e->subtract.setStyle("-fx-background-color: #4d4d4d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            subtract.setOnMouseExited(e->subtract.setStyle("-fx-background-color: #151515; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            equals.setOnMouseEntered(e->equals.setStyle("-fx-background-color: #0470c5; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
-            equals.setOnMouseExited(e->equals.setStyle("-fx-background-color: #16466d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 32;"));
+            equals.setOnMouseEntered(e->equals.setStyle("-fx-background-color: #0470c5; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
+            equals.setOnMouseExited(e->equals.setStyle("-fx-background-color: #16466d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 24;"));
 
-            resizedFlag = true;
+            if(scene.getWidth() > 400 && scene.getHeight() > 500) {
+                resizedFlag = true;
+            }
         }
-        else if (scene.getWidth() < 400 && scene.getHeight() < 500 && resizedFlag) {
+        else if ((scene.getWidth() < 400 || scene.getHeight() < 500) && resizedFlag) {
+            answer.setStyle("-fx-background-color: #242424; -fx-font-family: Segoe; -fx-font-size: 48; -fx-text-fill: white; -fx-font-size: 24;");
+            answer.setAlignment(Pos.CENTER_RIGHT);
+
             negate.setStyle("-fx-background-color: #070707; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;");
             comma.setStyle(negate.getStyle());
 
@@ -472,7 +484,9 @@ public class Main extends Application {
             equals.setOnMouseEntered(e->equals.setStyle("-fx-background-color: #0470c5; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;"));
             equals.setOnMouseExited(e->equals.setStyle("-fx-background-color: #16466d; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 0; -fx-font-size: 16;"));
 
-            resizedFlag = false;
+            if(scene.getWidth() < 400 && scene.getHeight() < 500) {
+                resizedFlag = false;
+            }
         }
         if (answer.getText().endsWith(".0")) {
             answer.setText(answer.getText().substring(0, answer.getText().indexOf(".")));
@@ -480,11 +494,6 @@ public class Main extends Application {
         if(answer.getText().contains("E")) {
             answer.setText(answer.getText().replace('E', 'e'));
         }
-    }
-
-    private void setButtonSize(Scene scene, Button b) {
-        b.setPrefWidth(scene.getWidth() * 0.25454545);
-        b.setPrefHeight(scene.getHeight() * 0.1333333);
     }
 
     public static void main(String[] args) {
