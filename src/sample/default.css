@@ -1,0 +1,39 @@
+.root {
+    -fx-background-color: #232323;
+    -fx-hgap: 1.2;
+    -fx-vgap: 1.2;
+}
+
+.label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-max-height: infinity;
+    -fx-max-width: infinity;
+    -fx-alignment: center-right;
+}
+
+.button {
+    -fx-background-color: #070707;
+    -fx-background-radius: 0;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-focus-traversable: false;
+    -fx-max-width: infinity;
+    -fx-max-height: infinity;
+}
+
+.button:hover {
+    -fx-background-color: #4d4d4d;
+}
+
+#equals {
+    -fx-background-color: #16466d;
+}
+
+#equals:hover {
+    -fx-background-color: #0470c5;
+}
