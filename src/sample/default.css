@@ -1,25 +1,29 @@
 .root {
     -fx-background-color: #232323;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
     -fx-hgap: 1.2;
     -fx-vgap: 1.2;
 }
 
 .label {
-    -fx-font-family: "Segoe UI";
-    -fx-font-size: 24;
-    -fx-font-weight: bold;
+    -fx-font-size: 32;
     -fx-text-fill: white;
     -fx-max-height: infinity;
     -fx-max-width: infinity;
     -fx-alignment: center-right;
 }
 
+#operationLabel {
+    -fx-font-size: 12;
+    -fx-font-weight: normal;
+    -fx-text-fill: #9e9e9e;
+}
+
 .button {
     -fx-background-color: #070707;
     -fx-background-radius: 0;
-    -fx-font-family: "Segoe UI";
     -fx-font-size: 16;
-    -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-focus-traversable: false;
     -fx-max-width: infinity;
@@ -36,4 +40,11 @@
 
 #equals:hover {
     -fx-background-color: #0470c5;
+}
+
+#backspace {
+    -fx-background-image: url("/icon/backspace-arrow.png");
+    -fx-background-size: 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
